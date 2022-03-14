@@ -15,14 +15,43 @@ class OwnersView(View):
         )
         return JsonResponse({'message':'SUCCESS'}, status=201)
     
+    # def get(self, request):
+    #     owners = Owner.objects.all()
+    #     results  = []
+        
+    #     for owner in owners:
+    #         results.append(
+    #             {
+    #                 "name" : owner.name,
+    #                 "email" : owner.email,
+    #                 "age" : owner.age
+    #             }
+    #         )
+       
+    #     return JsonResponse({'resutls':results}, status=200) 
+    
 class DogsView(View):
     def post(self, request):
         data = json.loads(request.body)
-        owner = Owner.objects.all()
-    
         Dog.objects.create(
             name = data['name'],
             age = data['age'],
-            owner_id = owner.id
+            owner_id = data["owner_id"]
         )
         return JsonResponse({'message':'SUCCESS'}, status=201)
+    
+    # def get(self, request):
+    #     owners = Owner.objects.all()
+    #     results  = []
+        
+    #     for owner in owners:
+    #         results.append(
+    #             {
+    #                 "name" : owner.name,
+    #                 "email" : owner.email,
+    #                 "age" : owner.age
+                    
+    #             }
+    #         )
+       
+    #     return JsonResponse({'resutls':results}, status=200)     
