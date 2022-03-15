@@ -15,20 +15,28 @@ class OwnersView(View):
         )
         return JsonResponse({'message':'SUCCESS'}, status=201)
     
-    # def get(self, request):
-    #     owners = Owner.objects.all()
-    #     results  = []
+    def get(self, request):
+        owners = Owner.objects.all()
+        results  = []
         
-    #     for owner in owners:
-    #         results.append(
-    #             {
-    #                 "name" : owner.name,
-    #                 "email" : owner.email,
-    #                 "age" : owner.age
-    #             }
-    #         )
-       
-    #     return JsonResponse({'resutls':results}, status=200) 
+        for owner in owners:
+            dogs = owner.dog_set.all()
+            dog_list = []
+            for dog in dogs:
+                dog_info = {
+                'dog_name' : dog.name,
+                'dog_age' : dog.age
+                }
+                dog_list.append(dog_info)
+            results.append(
+                {
+                    "name" : owner.name,
+                    "email" : owner.email,
+                    "age" : owner.age,     
+                    "dog_list" : dog_list,
+                }
+            )
+        return JsonResponse({'results':results}, status=200) 
     
 class DogsView(View):
     def post(self, request):
@@ -40,18 +48,17 @@ class DogsView(View):
         )
         return JsonResponse({'message':'SUCCESS'}, status=201)
     
-    # def get(self, request):
-    #     owners = Owner.objects.all()
-    #     results  = []
+    def get(self, request):
+        dogs = Dog.objects.all()
+        results  = []
         
-    #     for owner in owners:
-    #         results.append(
-    #             {
-    #                 "name" : owner.name,
-    #                 "email" : owner.email,
-    #                 "age" : owner.age
-                    
-    #             }
-    #         )
+        for dog in dogs:
+            results.append(
+                {
+                    "name" : dog.name,
+                    "age" : dog.age,
+                    "owner_name" : dog.owner.name
+                }
+            )
        
-    #     return JsonResponse({'resutls':results}, status=200)     
+        return JsonResponse({'results':results}, status=200)
